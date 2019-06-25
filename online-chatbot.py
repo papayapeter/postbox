@@ -9,7 +9,7 @@ r = sr.Recognizer()
 
 # classes ----------------------------------------------------------------------
 # child class of Eliza to make it possible to rewrite the run method
-class Eliza(eliza.Eliza):
+class postbox(eliza.Eliza):
     def run(self):
         # print and speak greeting
         intro = self.initial()
@@ -56,6 +56,6 @@ class Eliza(eliza.Eliza):
         os.system('mpg123 response.mp3')
 
 # main script ------------------------------------------------------------------
-therapist = Eliza()
-therapist.load('doctor.txt')
+therapist = postbox()
+therapist.load('postbox.txt')
 therapist.run()
