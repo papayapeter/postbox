@@ -1,5 +1,5 @@
 from eliza import *
 
 therapist = Eliza()
-therapist.load('doctor.txt')
+therapist.load('postbox.txt')
 therapist.run()

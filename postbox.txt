@@ -1,8 +1,12 @@
-initial: So please tell me about yourself.
-final: Goodbye.  Thank you for talking to me.
+initial: Before I open up to you, I want you to open up to me. So please tell me about yourself.
+initial: Do you expect me to show you my inner self, when you haven't revealed anything about yourself? Start talking.
+final: Thank you very much. I think you deserve to have a look. I'm unlocked.
+final: That was an interesting conversation. Also quite weird. Anyway, I'll unlock myself.
+final: Alright thank you. Before you go, please reach inside of me.
 quit: bye
 quit: goodbye
-quit: quit
+quit: open
+quit: enough
 pre: dont don't
 pre: cant can't
 pre: wont won't
@@ -114,16 +118,33 @@ key: xforeign
     reasmb: I speak only English.
 key: hello
   decomp: *
-    reasmb: How do you do.  Please state your problem.
-    reasmb: Hi.  What seems to be your problem ?
+    reasmb: How are you.  Tell me what's up.
+    reasmb: Hi.  What what are you thinking about ?
+key: hi
+  decomp: *
+    reasmb: How are you.  Tell me what's up.
+    reasmb: Hi.  What what are you thinking about ?
 key: computer 50
   decomp: *
     reasmb: Do computers worry you ?
     reasmb: Why do you mention computers ?
-    reasmb: What do you think machines have to do with your problem ?
     reasmb: Don't you think computers can help people ?
     reasmb: What about machines worrys you ?
     reasmb: What do you think about machines ?
+key: mailbox 50
+  decomp: *
+    reasmb: Do you find mailboxes attractive ?
+    reasmb: Why do you mention mailboxes ?
+    reasmb: Don't you think mailboxes can help people ?
+    reasmb: What about mailboxes do you like ?
+    reasmb: What do you think about mailboxes ?
+key: postbox 50
+  decomp: *
+    reasmb: Do you find postboxes attractive ?
+    reasmb: Why do you mention postboxes ?
+    reasmb: Don't you think postboxes can help people ?
+    reasmb: What about postboxes do you like ?
+    reasmb: What do you think about postboxes ?
 key: am
   decomp: * am i *
     reasmb: Do you believe you are (2) ?

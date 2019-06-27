@@ -1,22 +1,32 @@
 # imports ----------------------------------------------------------------------
-import os
 import speech_recognition as sr
-from gtts import gTTS
+import pyttsx3
 import eliza
 
 # objects ----------------------------------------------------------------------
 r = sr.Recognizer()
+engine = pyttsx3.init()
+
+# set properties of text to speech voice
+engine.setProperty('rate', 110) # words per minute
+engine.setProperty('volume', 1.0) # volume
 
 # classes ----------------------------------------------------------------------
 # child class of Eliza to make it possible to rewrite the run method
 class postbox(eliza.Eliza):
+    # the greeting
+    def initial(self):
+        return random.choice(self.initials)
+    # the goodbye (and what follows)
+    def final(self):
+        return random.choice(self.finals)
+    # the run-loop (conversation)
     def run(self):
         # print and speak greeting
         intro = self.initial()
         print(intro)
-        engine = gTTS(intro)
-        engine.save('response.mp3')
-        os.system('mpg123 response.mp3')
+        engine.say(intro)
+        engine.runAndWait()
 
         # main loop
         while True:
@@ -27,7 +37,7 @@ class postbox(eliza.Eliza):
                 with sr.Microphone() as source: # listen to microphone
                     audio = r.listen(source)
                 try: # try to recognize
-                    said = r.recognize_google(audio)
+                    said = r.recognize_sphinx(audio)
                     print('> ' + said)
                     repeat = False
                 except sr.UnknownValueError: # handle errors. repeat
@@ -44,16 +54,14 @@ class postbox(eliza.Eliza):
 
             # print and speak answer
             print(output)
-            engine = gTTS(output)
-            engine.save('response.mp3')
-            os.system('mpg123 response.mp3')
+            engine.say(output)
+            engine.runAndWait()
 
         # print and speak goodbye
         outro = self.final()
         print(outro)
-        engine = gTTS(outro)
-        engine.save('response.mp3')
-        os.system('mpg123 response.mp3')
+        engine.say(outro)
+        engine.runAndWait()
 
 # main script ------------------------------------------------------------------
 therapist = postbox()
