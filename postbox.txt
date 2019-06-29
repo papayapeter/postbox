@@ -7,6 +7,9 @@ quit: bye
 quit: goodbye
 quit: open
 quit: enough
+pre: hi hello
+pre: postbox mailbox
+pre: post mail
 pre: dont don't
 pre: cant can't
 pre: wont won't
@@ -42,10 +45,48 @@ synon: everyone everybody nobody noone
 synon: be am is are was
 key: xnone
   decomp: *
-    reasmb: I'm not sure I understand you fully.
     reasmb: Please go on.
+    reasmb: I'm not sure I understand you fully.
     reasmb: What does that suggest to you ?
     reasmb: Do you feel strongly about discussing such things ?
+key: hello
+  decomp: *
+    reasmb: How are you.  Tell me what's up.
+    reasmb: Hi.  What what are you thinking about ?
+key: ok
+  decomp: *
+    reasmb: Let's move on.
+    reasmb: Is it really okay ?
+key: understand
+  decomp: * don't understand *
+    reasmb: What's there not to understand ?
+    reasmb: Humans are a mystery to me.
+key: post
+  decomp: *
+    reasmb: We'll get to that in a minute.
+    reasmb: Don't be so impatient.
+key: mailbox 50
+  decomp: *
+    reasmb: Do you find mailboxes attractive ?
+    reasmb: Why do you mention mailboxes ?
+    reasmb: Don't you think mailboxes can help people ?
+    reasmb: What about mailboxes do you like ?
+    reasmb: What do you think about mailboxes ?
+key: what
+  decomp: what
+    reasmb: what ?
+    reasmb: what ?
+    reasmb: You are being quite rude.
+  decomp: *
+    reasmb: Why do you ask ?
+    reasmb: Does that question interest you ?
+    reasmb: What is it you really wanted to know ?
+    reasmb: Are such questions much on your mind ?
+    reasmb: What answer would please you most ?
+    reasmb: What do you think ?
+    reasmb: What comes to mind when you ask that ?
+    reasmb: Have you asked such questions before ?
+    reasmb: Have you asked anyone else ?
 key: sorry
   decomp: *
     reasmb: Please don't apologise.
@@ -116,14 +157,6 @@ key: espanol
 key: xforeign
   decomp: *
     reasmb: I speak only English.
-key: hello
-  decomp: *
-    reasmb: How are you.  Tell me what's up.
-    reasmb: Hi.  What what are you thinking about ?
-key: hi
-  decomp: *
-    reasmb: How are you.  Tell me what's up.
-    reasmb: Hi.  What what are you thinking about ?
 key: computer 50
   decomp: *
     reasmb: Do computers worry you ?
@@ -131,20 +164,6 @@ key: computer 50
     reasmb: Don't you think computers can help people ?
     reasmb: What about machines worrys you ?
     reasmb: What do you think about machines ?
-key: mailbox 50
-  decomp: *
-    reasmb: Do you find mailboxes attractive ?
-    reasmb: Why do you mention mailboxes ?
-    reasmb: Don't you think mailboxes can help people ?
-    reasmb: What about mailboxes do you like ?
-    reasmb: What do you think about mailboxes ?
-key: postbox 50
-  decomp: *
-    reasmb: Do you find postboxes attractive ?
-    reasmb: Why do you mention postboxes ?
-    reasmb: Don't you think postboxes can help people ?
-    reasmb: What about postboxes do you like ?
-    reasmb: What do you think about postboxes ?
 key: am
   decomp: * am i *
     reasmb: Do you believe you are (2) ?
@@ -307,17 +326,6 @@ key: can
     reasmb: Do you want to be able to (2) ?
     reasmb: Perhaps you don't want to (2) .
     reasmb: goto what
-key: what
-  decomp: *
-    reasmb: Why do you ask ?
-    reasmb: Does that question interest you ?
-    reasmb: What is it you really wanted to know ?
-    reasmb: Are such questions much on your mind ?
-    reasmb: What answer would please you most ?
-    reasmb: What do you think ?
-    reasmb: What comes to mind when you ask that ?
-    reasmb: Have you asked such questions before ?
-    reasmb: Have you asked anyone else ?
 key: because
   decomp: *
     reasmb: Is that the real reason ?
