@@ -8,7 +8,6 @@ import eliza
 # settings ---------------------------------------------------------------------
 conversation_length = 10 # number of exchanges (+/- 20 % each time)
 call_interval = 300 # mean time inbetween calls (+/- 50 % each time)
-tts_rate = 110
 
 # objects ----------------------------------------------------------------------
 r = sr.Recognizer()
@@ -17,7 +16,7 @@ r = sr.Recognizer()
 # child class of Eliza to make it possible to rewrite the run method
 class postbox(eliza.Eliza):
     def say(self, text, rate, volume, voice = 'm1', filename = 'response.wav'):
-        os.system('espak \"' + text +
+        os.system('espeak \"' + text +
                   '\" -a ' + str(volume) +
                   ' -s ' + str(rate) +
                   ' -ven+' + voice +
