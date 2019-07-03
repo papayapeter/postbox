@@ -17,7 +17,7 @@ r = sr.Recognizer()
 # child class of Eliza to make it possible to rewrite the run method
 class postbox(eliza.Eliza):
     def say(self, text, rate, volume, voice = 'm1', filename = 'response.wav'):
-        os.system('esepak \"' + text +
+        os.system('espak \"' + text +
                   '\" -a ' + str(volume) +
                   ' -s ' + str(rate) +
                   ' -ven+' + voice +
