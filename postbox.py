@@ -18,8 +18,8 @@ r = sr.Recognizer()
 class postbox(eliza.Eliza):
     def say(self, text, rate, volume, voice = 'm1', filename = 'response.wav'):
         os.system('esepak \"' + text +
-                  '\" -a ' + volume +
-                  ' -s ' + rate +
+                  '\" -a ' + str(volume) +
+                  ' -s ' + str(rate) +
                   ' -ven+' + voice +
                   ' -w ' + filename +
                   ' && aplay ' + filename)
