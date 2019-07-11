@@ -39,12 +39,6 @@ class postbox(eliza.Eliza):
         call =  random.choice(calls)
         print(call)
         self.say(call, 110, 100)
-    # enjoy the post
-    def post_out(self):
-        calls = ('I feel a little empty now', 'oh', 'I hope it\'s good news')
-        call =  random.choice(calls)
-        print(call)
-        self.say(call, 110, 100)
     # the goodbye
     def goodbye(self):
         calls = ('Have a wonderful day', 'goodbye then', 'please come visit me again')
@@ -92,35 +86,38 @@ class postbox(eliza.Eliza):
         return True
 
 # variables --------------------------------------------------------------------
-
-# functions --------------------------------------------------------------------
-def touched(): # what to do if touched
-    # greeting
-    posty.initial()
-
-    # talk for conversation_length +/- 20%
-    count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
-    while count > 0 and posty.run():
-        count -= 1
-
-    # goodbye
-    posty.final()
-
-    # *** unlock
+unlocked = True # is the mailbox unlocked?
+mail_in  = False # was mail inside at the time of unlocking?
 
 # main script ------------------------------------------------------------------
 posty = postbox()
 posty.load('postbox.txt')
 
+# wait for arduino to start up
+while True: # *** arduino pin high instead of 'True'
+    time.sleep(1)
+
 # main loop --------------------------------------------------------------------
 while True:
-    if True: # *** touch condition instead of 'True'
-        touched()
-        # *** save mail state (is mail in the box?)
+    if True: # *** touch condition & !unlocked state instead of 'True'
+        # greeting
+        posty.initial()
+
+        # talk for conversation_length +/- 20%
+        count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
+        while count > 0 and posty.run():
+            count -= 1
+
+        # goodbye
+        posty.final()
+
+        # *** unlock
         # *** save unlocked state
+        # *** save mail state (is mail in the box?)
     elif True: # *** take out condition & unlocked state & mail state instead of 'True'
         posty.post_out()
-    elif True: # *** put in condition & unlocked state & mail state instead of 'True'
+    elif True: # *** put in condition & unlocked state & !mail state instead of 'True'
         posty.post_in()
-    elif True: # *** cloed condition instead of 'True'
+    elif True: # *** closed condition instead of 'True'
         posty.goodbye()
+        time.sleep(5)
