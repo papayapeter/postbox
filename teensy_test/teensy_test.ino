@@ -73,7 +73,11 @@ void setup()
   flag_servo.attach(FLAG_SERVO);
   door_servo.attach(DOOR_SERVO);
 
+<<<<<<< HEAD
   // set servo default position
+=======
+  // write default position
+>>>>>>> 1d994a6a4952fd65f31eca79b2e0bc472607fa12
   flag_servo.write(180);
   door_servo.write(175);
 

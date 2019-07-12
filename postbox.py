@@ -7,7 +7,6 @@ import eliza
 
 # settings ---------------------------------------------------------------------
 conversation_length = 10 # number of exchanges (+/- 20 % each time)
-call_interval = 300 # mean time inbetween calls (+/- 50 % each time)
 
 # objects ----------------------------------------------------------------------
 r = sr.Recognizer()
@@ -28,12 +27,30 @@ class postbox(eliza.Eliza):
         call =  random.choice(calls)
         print(call)
         self.say(call, 110, 100)
+    # thanks for the post
+    def post_in(self):
+        calls = ('Yummy. Mail', 'Thanks', 'Somebody will be happy')
+        call =  random.choice(calls)
+        print(call)
+        self.say(call, 110, 100)
+    # enjoy the post
+    def post_out(self):
+        calls = ('I feel a little empty now', 'oh', 'I hope it\'s good news')
+        call =  random.choice(calls)
+        print(call)
+        self.say(call, 110, 100)
+    # the goodbye
+    def goodbye(self):
+        calls = ('Have a wonderful day', 'goodbye then', 'please come visit me again')
+        call =  random.choice(calls)
+        print(call)
+        self.say(call, 110, 100)
     # the greeting
     def initial(self): # print and speak greeting
         intro =  random.choice(self.initials)
         print(intro)
         self.say(intro, 110, 100)
-    # the goodbye (and what follows)
+    # the unlocking sentence
     def final(self): # print and speak goodbye
         outro = random.choice(self.finals)
         print(outro)
@@ -68,33 +85,39 @@ class postbox(eliza.Eliza):
 
         return True
 
+# variables --------------------------------------------------------------------
+unlocked = True # is the mailbox unlocked?
+mail_in  = False # was mail inside at the time of unlocking?
+
 # main script ------------------------------------------------------------------
 posty = postbox()
 posty.load('postbox.txt')
 
-call_timer = 0 # counter to next call (in seconds)
-# set call out timer
-call_time = call_interval + random.randint(-(call_interval * 0.5), call_interval * 0.5)
-# main loop
+# wait for arduino to start up
+while True: # *** arduino pin high instead of 'True'
+    time.sleep(1)
+
+# main loop --------------------------------------------------------------------
 while True:
-    if True: # *** touch condition instead of 'True'
+    if True: # *** touch condition & !unlocked state instead of 'True'
+        # greeting
         posty.initial()
 
+        # talk for conversation_length +/- 20%
         count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
         while count > 0 and posty.run():
             count -= 1
 
+        # goodbye
         posty.final()
-        # *** unlock
 
-        # reset call out timer
-        call_timer = 0
-    else:
-        # *** check for mail
-        time.sleep(1)
-        call_timer += 1
-        if call_timer >= call_time:
-            posty.call()
-            # reset call out timer
-            call_timer = 0
-            call_time = call_interval + random.randint(call_interval / (-2), call_interval / 2)
+        # *** unlock
+        # *** save unlocked state
+        # *** save mail state (is mail in the box?)
+    elif True: # *** take out condition & unlocked state & mail state instead of 'True'
+        posty.post_out()
+    elif True: # *** put in condition & unlocked state & !mail state instead of 'True'
+        posty.post_in()
+    elif True: # *** closed condition instead of 'True'
+        posty.goodbye()
+        time.sleep(5)
