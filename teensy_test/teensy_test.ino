@@ -8,12 +8,13 @@ const uint8_t LED         = 13;
 const uint8_t BEAM        = 16;
 const uint8_t DOOR_SWITCH = 0;
 const uint8_t DOOR_SERVO  = 3;
+const uint8_t FLAG_SERVO  = 4;
 const uint8_t DOOR_TOUCH  = 15;
 
 // objects ---------------------------------------------------------------------
 // timers
 Metro servo_timer(50);
-Metro touch_timer(50);
+Metro touch_timer(100);
 
 // debouncers
 Bounce beam        = Bounce();
@@ -21,15 +22,18 @@ Bounce door_switch = Bounce();
 
 // servos
 PWMServo door_servo;
+PWMServo flag_servo;
 
 // variables -------------------------------------------------------------------
 // servos
-uint8_t door_servo_pos = 0;
-int8_t  door_servo_dir = 1;
+uint8_t flag_servo_pos = 0;
+int8_t  flag_servo_dir = 1;
 
 // touch
 int32_t touch_calibrated;
 int32_t  touch_deviation;
+
+bool last_touched = true;
 
 // functions -------------------------------------------------------------------
 /**
@@ -63,17 +67,18 @@ void setup()
   beam.interval(10);
 
   door_switch.attach(DOOR_SWITCH, INPUT_PULLUP);
-  door_switch.interval(50);
+  door_switch.interval(10);
 
   // set up servos
+  flag_servo.attach(FLAG_SERVO);
   door_servo.attach(DOOR_SERVO);
+
+  // set servo default position
+  flag_servo.write(180);
+  door_servo.write(175);
 
   // calibrate the touch
   touchCalibrate(DOOR_TOUCH, LED, 100, 50, touch_calibrated, touch_deviation);
-
-  // debug
-  Serial.println("base " + String(touch_calibrated) +
-               "\tdeviation " + String(touch_deviation));
 }
 
 // loop ------------------------------------------------------------------------
@@ -81,25 +86,40 @@ void loop()
 {
   // read the touch
   if (touch_timer.check())
-    Serial.println(touchReadCalibrated(DOOR_TOUCH, touch_calibrated, touch_deviation));
+  {
+    if (touchReadCalibrated(DOOR_TOUCH, touch_calibrated, touch_deviation))
+    {
+      if (!last_touched)
+        Serial.println("grabbed");
+
+      last_touched = true;
+    }
+    else
+    {
+      if (last_touched)
+        Serial.println("let go");
+
+      last_touched = false;
+    }
+  }
 
   // move the servo
   if (servo_timer.check())
   {
-    door_servo_pos += door_servo_dir;
+    flag_servo_pos += flag_servo_dir;
 
-    if (door_servo_pos >= 180)
+    if (flag_servo_pos >= 180)
     {
-      door_servo_dir = -1;
+      flag_servo_dir = -1;
       Serial.println("servo 180");
     }
-    else if (door_servo_pos <= 0)
+    else if (flag_servo_pos <= 0)
     {
-      door_servo_dir = 1;
+      flag_servo_dir = 1;
       Serial.println("servo 0");
     }
 
-    door_servo.write(door_servo_pos);
+    flag_servo.write(flag_servo_pos);
   }
 
   // check beam sensor
@@ -158,7 +178,7 @@ void touchCalibrate(uint8_t pin, uint8_t led_pin, uint8_t samples, uint8_t inter
 bool touchReadCalibrated(uint8_t pin, int32_t base, int32_t deviation)
 {
   // stack to store current & previous touch values
-  static uint32_t touch_stack[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  static int32_t touch_stack[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   // push everything back and drop last values
   for (uint8_t i = 0; i < 10 - 1; i ++)
@@ -170,7 +190,7 @@ bool touchReadCalibrated(uint8_t pin, int32_t base, int32_t deviation)
   touch_stack[0] = touchRead(pin);
 
   // calculate average
-  uint32_t average = 0;
+  int32_t average = 0;
   for (uint8_t i = 0; i < 10; i++)
   {
     average += touch_stack[i];
@@ -178,5 +198,5 @@ bool touchReadCalibrated(uint8_t pin, int32_t base, int32_t deviation)
   average /= 10;
 
   // get result
-  return abs(average - base) > abs(deviation / 2);
+  return abs(average - base) > abs(deviation / 6);
 }
