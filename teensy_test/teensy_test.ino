@@ -8,6 +8,7 @@ const uint8_t LED         = 13;
 const uint8_t BEAM        = 16;
 const uint8_t DOOR_SWITCH = 0;
 const uint8_t DOOR_SERVO  = 3;
+const uint8_t FLAG_SERVO  = 4;
 const uint8_t DOOR_TOUCH  = 15;
 
 // objects ---------------------------------------------------------------------
@@ -21,11 +22,12 @@ Bounce door_switch = Bounce();
 
 // servos
 PWMServo door_servo;
+PWMServo flag_servo;
 
 // variables -------------------------------------------------------------------
 // servos
-uint8_t door_servo_pos = 0;
-int8_t  door_servo_dir = 1;
+uint8_t flag_servo_pos = 0;
+int8_t  flag_servo_dir = 1;
 
 // touch
 int32_t touch_calibrated;
@@ -66,7 +68,12 @@ void setup()
   door_switch.interval(50);
 
   // set up servos
+  flag_servo.attach(FLAG_SERVO);
   door_servo.attach(DOOR_SERVO);
+
+  // write default position
+  flag_servo.write(180);
+  door_servo.write(175);
 
   // calibrate the touch
   touchCalibrate(DOOR_TOUCH, LED, 100, 50, touch_calibrated, touch_deviation);
@@ -86,20 +93,20 @@ void loop()
   // move the servo
   if (servo_timer.check())
   {
-    door_servo_pos += door_servo_dir;
+    flag_servo_pos += flag_servo_dir;
 
-    if (door_servo_pos >= 180)
+    if (flag_servo_pos >= 180)
     {
-      door_servo_dir = -1;
+      flag_servo_dir = -1;
       Serial.println("servo 180");
     }
-    else if (door_servo_pos <= 0)
+    else if (flag_servo_pos <= 0)
     {
-      door_servo_dir = 1;
+      flag_servo_dir = 1;
       Serial.println("servo 0");
     }
 
-    door_servo.write(door_servo_pos);
+    flag_servo.write(flag_servo_pos);
   }
 
   // check beam sensor
