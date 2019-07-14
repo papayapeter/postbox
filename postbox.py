@@ -123,7 +123,7 @@ while True:
         posty.initial()
 
         # talk for conversation_length +/- 20%
-        count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
+        count = conversation_length #+ random.randint(-(conversation_length * 0.2), conversation_length *0.2)
         while count > 1 and posty.run(True):
             count -= 1
             print(count)
