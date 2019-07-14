@@ -125,6 +125,7 @@ while True:
         count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
         while count > 0 and posty.run():
             count -= 1
+            print(count)
 
         # goodbye
         posty.final()
