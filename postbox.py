@@ -13,7 +13,7 @@ GPIO_UNLOCKED_IN  = 13;
 GPIO_TOUCHED_IN   = 6;
 
 # settings ---------------------------------------------------------------------
-conversation_length = 10 # number of exchanges (+/- 20 % each time)
+conversation_length = 5 # number of exchanges (+/- 20 % each time)
 
 # objects ----------------------------------------------------------------------
 r = sr.Recognizer()
@@ -133,7 +133,9 @@ while True:
         mail_in = GPIO.input(GPIO_MAIL_IN)
 
         # unlock
-        GPIO.output(GPIO_UNLOCK_OUT)
+        GPIO.output(GPIO_UNLOCK_OUT, GPIO.HIGH)
+        time.sleep(1)
+        GPIO.output(GPIO_UNLOCK_OUT, GPIO.LOW)
     # mail was inside but has been taken out
     elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0 and mail_in:
         posty.post_out()
