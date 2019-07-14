@@ -39,10 +39,10 @@ bool door_open = true;
 bool mail_in = false;
 
 // settings --------------------------------------------------------------------
-const uint8_t door_open_pos = 174;
-const uint8_t door_closed_pos = 180;
-const uint8_t flag_up_pos = 90;
-const uint8_t flag_down_pos = 180;
+const uint8_t door_open_pos = 180;
+const uint8_t door_closed_pos = 174;
+const uint8_t flag_up_pos = 85;
+const uint8_t flag_down_pos = 176;
 
 // functions -------------------------------------------------------------------
 /**
@@ -82,8 +82,8 @@ void setup()
   flag_servo.attach(FLAG_SERVO);
   door_servo.attach(DOOR_SERVO);
 
-  flag_servo.write(180);
-  door_servo.write(175);
+  flag_servo.write(flag_down_pos);
+  door_servo.write(door_open_pos);
 
   // calibrate the touch
   touchCalibrate(DOOR_TOUCH, LED, 100, 50, touch_calibrated, touch_deviation);
