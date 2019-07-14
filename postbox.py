@@ -13,7 +13,7 @@ GPIO_UNLOCKED_IN  = 13;
 GPIO_TOUCHED_IN   = 6;
 
 # settings ---------------------------------------------------------------------
-conversation_length = 5 # number of exchanges (+/- 20 % each time)
+conversation_length = 2 # number of exchanges (+/- 20 % each time)
 
 # objects ----------------------------------------------------------------------
 r = sr.Recognizer()
@@ -63,7 +63,7 @@ class postbox(eliza.Eliza):
         print(outro)
         self.say(outro, 110, 100)
     # the run-loop (conversation)
-    def run(self):
+    def run(self, respond):
         said = ''
         repeat = True
         # repeat until no error has occured and something has been recognized
@@ -87,8 +87,9 @@ class postbox(eliza.Eliza):
             return False
 
         # print and speak answer
-        print(output)
-        self.say(output, 110, 100)
+        if respond:
+            print(output)
+            self.say(output, 110, 100)
 
         return True
 
@@ -123,9 +124,11 @@ while True:
 
         # talk for conversation_length +/- 20%
         count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
-        while count > 0 and posty.run():
+        while count > 1 and posty.run(True):
             count -= 1
             print(count)
+
+        posty.run(False)
 
         # goodbye
         posty.final()
@@ -135,7 +138,7 @@ while True:
 
         # unlock
         GPIO.output(GPIO_UNLOCK_OUT, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(10)
         GPIO.output(GPIO_UNLOCK_OUT, GPIO.LOW)
     # mail was inside but has been taken out
     elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0 and mail_in:

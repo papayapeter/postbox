@@ -151,7 +151,7 @@ void loop()
   // check door switch
   door_switch.update();
 
-  if (door_switch.fell() && door_open)
+  if (door_switch.fell() && door_open && !digitalRead(GPIO_UNLOCK_IN))
   {
     Serial.println("door closed");
 
