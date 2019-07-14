@@ -151,7 +151,7 @@ void loop()
   // check door switch
   door_switch.update();
 
-  if (door_switch.fell())
+  if (door_switch.fell() && door_open)
   {
     Serial.println("door closed");
 

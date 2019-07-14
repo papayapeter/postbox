@@ -2,8 +2,15 @@
 import os
 import time
 import random
+import RPi.GPIO as GPIO
 import speech_recognition as sr
 import eliza
+
+# pins -------------------------------------------------------------------------
+GPIO_UNLOCK_OUT   = 26;
+GPIO_MAIL_IN      = 19;
+GPIO_UNLOCKED_IN  = 13;
+GPIO_TOUCHED_IN   = 6;
 
 # settings ---------------------------------------------------------------------
 conversation_length = 10 # number of exchanges (+/- 20 % each time)
@@ -90,16 +97,28 @@ unlocked = True # is the mailbox unlocked?
 mail_in  = False # was mail inside at the time of unlocking?
 
 # main script ------------------------------------------------------------------
+# GPIO setup
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(GPIO_UNLOCK_OUT, GPIO.OUT)
+GPIO.setup(GPIO_MAIL_IN, GPIO.IN)
+GPIO.setup(GPIO_UNLOCKED_IN, GPIO.IN)
+GPIO.setup(GPIO_TOUCHED_IN, GPIO.IN)
+
+GPIO.add_event_detect(GPIO_MAIL_IN, GPIO.BOTH)
+GPIO.add_event_detect(GPIO_UNLOCKED_IN, GPIO.FALLING)
+GPIO.add_event_detect(GPIO_TOUCHED_IN, GPIO.RISING)
+
+# eliza setup
 posty = postbox()
 posty.load('postbox.txt')
 
-# wait for arduino to start up
-while True: # *** arduino pin high instead of 'True'
-    time.sleep(1)
+posty.say('I\'m online', 110, 100)
 
 # main loop --------------------------------------------------------------------
 while True:
-    if True: # *** touch condition & !unlocked state instead of 'True'
+    # if touched and locked
+    if GPIO.event_detected(GPIO_TOUCHED_IN) and GPIO.input(GPIO_UNLOCKED_IN) == 0:
         # greeting
         posty.initial()
 
@@ -111,13 +130,19 @@ while True:
         # goodbye
         posty.final()
 
-        # *** unlock
-        # *** save unlocked state
-        # *** save mail state (is mail in the box?)
-    elif True: # *** take out condition & unlocked state & mail state instead of 'True'
+        # save mail state (is mail in the box?)
+        mail_in = GPIO.input(GPIO_MAIL_IN)
+
+        # unlock
+        GPIO.output(GPIO_UNLOCK_OUT)
+        unlocked = True;
+    # mail was inside but has been taken out
+    elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0 and mail_in:
         posty.post_out()
-    elif True: # *** put in condition & unlocked state & !mail state instead of 'True'
+    # mail wasn't inside but has been put in
+    elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 1 and not mail_in:
         posty.post_in()
-    elif True: # *** closed condition instead of 'True'
+    # was closed
+    elif GPIO.event_detected(GPIO_UNLOCKED_IN):
         posty.goodbye()
         time.sleep(5)
