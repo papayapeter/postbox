@@ -173,7 +173,7 @@ void loop()
   }
 
   // check raspberry pi input
-  if (digitalRead(GPIO_UNLOCK_IN))
+  if (digitalRead(GPIO_UNLOCK_IN) && !door_open)
   {
     Serial.println("door unlocked");
 
