@@ -25,15 +25,24 @@ PWMServo door_servo;
 PWMServo flag_servo;
 
 // variables -------------------------------------------------------------------
-// servos
-uint8_t flag_servo_pos = 0;
-int8_t  flag_servo_dir = 1;
 
 // touch
 int32_t touch_calibrated;
 int32_t  touch_deviation;
 
 bool last_touched = true;
+
+// door
+bool door_open = true;
+
+// flag (mail)
+bool mail_in = false;
+
+// settings --------------------------------------------------------------------
+const uint8_t door_open_pos = 174;
+const uint8_t door_closed_pos = 180;
+const uint8_t flag_up_pos = 90;
+const uint8_t flag_down_pos = 180;
 
 // functions -------------------------------------------------------------------
 /**
@@ -73,11 +82,6 @@ void setup()
   flag_servo.attach(FLAG_SERVO);
   door_servo.attach(DOOR_SERVO);
 
-<<<<<<< HEAD
-  // set servo default position
-=======
-  // write default position
->>>>>>> 1d994a6a4952fd65f31eca79b2e0bc472607fa12
   flag_servo.write(180);
   door_servo.write(175);
 
@@ -97,6 +101,9 @@ void loop()
         Serial.println("grabbed");
 
       last_touched = true;
+
+      // open door
+      door_open = true;
     }
     else
     {
@@ -107,40 +114,49 @@ void loop()
     }
   }
 
-  // move the servo
-  if (servo_timer.check())
-  {
-    flag_servo_pos += flag_servo_dir;
-
-    if (flag_servo_pos >= 180)
-    {
-      flag_servo_dir = -1;
-      Serial.println("servo 180");
-    }
-    else if (flag_servo_pos <= 0)
-    {
-      flag_servo_dir = 1;
-      Serial.println("servo 0");
-    }
-
-    flag_servo.write(flag_servo_pos);
-  }
-
   // check beam sensor
   beam.update();
 
   if (beam.fell())
+  {
     Serial.println("in beam");
+
+    // raise flag
+    mail_in = true;
+  }
   else if (beam.rose())
+  {
     Serial.println("out of beam");
+
+    // lower flag
+    mail_in = false;
+  }
 
   // check door switch
   door_switch.update();
 
   if (door_switch.fell())
+  {
     Serial.println("door closed");
+
+    // close door
+    door_open = false;
+  }
   else if (door_switch.rose())
+  {
     Serial.println("door opened");
+  }
+
+  // servos
+  if (door_open)
+    door_servo.write(door_open_pos);
+  else
+    door_servo.write(door_closed_pos);
+
+  if (mail_in)
+    flag_servo.write(flag_up_pos);
+  else
+    flag_servo.write(flag_down_pos);
 }
 
 // functions -------------------------------------------------------------------
