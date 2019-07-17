@@ -63,7 +63,7 @@ class postbox(eliza.Eliza):
         print(intro)
         self.say(intro, 95, 100)
 
-        time.sleep(0.75)
+        time.sleep(0.25)
 
         intro =  random.choice(self.initials)
         print(intro)
@@ -92,6 +92,7 @@ class postbox(eliza.Eliza):
     def run(self, respond = True, first = False):
         said = ''
         repeat = True
+        first_repeat = True
         # repeat until no error has occured and something has been recognized
         while repeat:
             with sr.Microphone() as source: # listen to microphone
@@ -104,6 +105,7 @@ class postbox(eliza.Eliza):
                     insert = random.choice(inserts)
                     print(insert)
                     self.say(insert, 95, 100)
+
                     first_repeat = False
 
                 said = r.recognize_sphinx(audio)

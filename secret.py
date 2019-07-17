@@ -69,7 +69,7 @@ class postbox(eliza.Eliza):
         print(intro)
         self.say(intro, 95, 100)
 
-        time.sleep(0.75)
+        time.sleep(0.25)
 
         intro = 'But I am a little deaf. So please speak right into my ear.'
         print(intro)
@@ -152,7 +152,7 @@ with sr.Microphone() as source:
 
 # eliza setup
 posty = postbox()
-posty.load('/home/pi/postbox/postbox.txt')
+posty.load('/home/pi/postbox/secret.txt')
 
 posty.say('I\'m online', 95, 100)
 
