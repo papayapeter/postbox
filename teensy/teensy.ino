@@ -45,8 +45,8 @@ bool mail_in = false;
 // settings --------------------------------------------------------------------
 const uint8_t door_open_pos   = 180;
 const uint8_t door_closed_pos = 174;
-const uint8_t flag_up_pos     = 85;
-const uint8_t flag_down_pos   = 176;
+const uint8_t flag_up_pos     = 80;
+const uint8_t flag_down_pos   = 170;
 
 // functions -------------------------------------------------------------------
 /**
@@ -70,7 +70,7 @@ bool touchReadCalibrated(uint8_t pin, int32_t base, int32_t deviation);
 void setup()
 {
   // debug
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   // set up pins
   pinMode(LED, OUTPUT);
@@ -107,7 +107,7 @@ void loop()
     if (touchReadCalibrated(DOOR_TOUCH, touch_calibrated, touch_deviation))
     {
       if (!last_touched)
-        Serial.println("grabbed");
+        // Serial.println("grabbed");
 
       last_touched = true;
 
@@ -117,7 +117,7 @@ void loop()
     else
     {
       if (last_touched)
-        Serial.println("let go");
+        // Serial.println("let go");
 
       last_touched = false;
 
@@ -131,7 +131,7 @@ void loop()
 
   if (beam.fell())
   {
-    Serial.println("in beam");
+    // Serial.println("in beam");
 
     mail_in = true;
 
@@ -140,7 +140,7 @@ void loop()
   }
   else if (beam.rose())
   {
-    Serial.println("out of beam");
+    // Serial.println("out of beam");
 
     mail_in = false;
 
@@ -153,7 +153,7 @@ void loop()
 
   if (door_switch.fell() && door_open && !digitalRead(GPIO_UNLOCK_IN))
   {
-    Serial.println("door closed");
+    // Serial.println("door closed");
 
     // lock door
     door_open = false;
@@ -169,13 +169,13 @@ void loop()
   }
   else if (door_switch.rose())
   {
-    Serial.println("door opened");
+    // Serial.println("door opened");
   }
 
   // check raspberry pi input
   if (digitalRead(GPIO_UNLOCK_IN) && !door_open)
   {
-    Serial.println("door unlocked");
+    // Serial.println("door unlocked");
 
     // open door
     door_open = true;
