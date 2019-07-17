@@ -149,7 +149,7 @@ with sr.Microphone() as source:
 
 # eliza setup
 posty = postbox()
-posty.load('postbox.txt')
+posty.load('/home/pi/postbox/postbox.txt')
 
 posty.say('I\'m online', 95, 100)
 
