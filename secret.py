@@ -74,6 +74,8 @@ class postbox(eliza.Eliza):
         intro = 'But I am a little deaf. So please speak right into my ear.'
         print(intro)
         self.say(intro, 95, 100)
+
+        self.first_repeat = True
     # the unlocking sentence
     def final(self): # print and speak goodbye
         outros = ('Thank you very much. I think you deserve to have a look.',
@@ -98,13 +100,14 @@ class postbox(eliza.Eliza):
                 audio = r.listen(source)
             try: # try to recognize
                 # tell about slow speed
-                if first and first_repeat:
+                if first and self.first_repeat:
                     inserts = ('I\'m a little slow, give me a second.',
                                'I\'m not the youngest anymore, give me some time to think.')
                     insert = random.choice(inserts)
                     print(insert)
                     self.say(insert, 95, 100)
-                    first_repeat = False
+
+                    self.first_repeat = True
 
                 said = r.recognize_sphinx(audio)
                 print('> ' + said)
@@ -130,7 +133,6 @@ class postbox(eliza.Eliza):
 
 # variables --------------------------------------------------------------------
 mail_in = 0 # was mail inside at the time of unlocking?
-first_repeat = True
 
 # main script ------------------------------------------------------------------
 # GPIO setup
