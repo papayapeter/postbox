@@ -88,6 +88,15 @@ class postbox(eliza.Eliza):
             with sr.Microphone() as source: # listen to microphone
                 audio = r.listen(source)
             try: # try to recognize
+                # tell about slow speed
+                if first:
+                    inserts = ('I\'m a little slow, give me a second.',
+                               'Let me think.',
+                               'I\'m not the youngest anymore, give me some time to think.')
+                    insert = random.choice(inserts)
+                    print(insert)
+                    self.say(insert, 110, 100)
+
                 said = r.recognize_sphinx(audio)
                 print('> ' + said)
                 repeat = False
@@ -97,14 +106,6 @@ class postbox(eliza.Eliza):
                 print('Could not request results from Speech Recognition program; {0}'.format(e))
             if said == '': # nothing detected. repeat
                 print('No speech detected')
-
-        if first:
-            inserts = ('I\'m a little slow, give me a second.',
-                       'Let me think.',
-                       'I\'m not the youngest anymore, give me some time to think.')
-            insert = random.choice(intros)
-            print(insert)
-            self.say(insert, 110, 100)
 
         # get response. exit if no response left
         output = self.respond(said)
