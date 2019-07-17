@@ -74,8 +74,6 @@ class postbox(eliza.Eliza):
         intro = 'But I am a little deaf. So please speak right into my ear.'
         print(intro)
         self.say(intro, 95, 100)
-
-        self.first_repeat = True
     # the unlocking sentence
     def final(self): # print and speak goodbye
         outros = ('Thank you very much. I think you deserve to have a look.',
@@ -94,20 +92,21 @@ class postbox(eliza.Eliza):
     def run(self, respond = True, first = False):
         said = ''
         repeat = True
+        first_repeat = True
         # repeat until no error has occured and something has been recognized
         while repeat:
             with sr.Microphone() as source: # listen to microphone
                 audio = r.listen(source)
             try: # try to recognize
                 # tell about slow speed
-                if first and self.first_repeat:
+                if first and first_repeat:
                     inserts = ('I\'m a little slow, give me a second.',
                                'I\'m not the youngest anymore, give me some time to think.')
                     insert = random.choice(inserts)
                     print(insert)
                     self.say(insert, 95, 100)
 
-                    self.first_repeat = True
+                    first_repeat = False
 
                 said = r.recognize_sphinx(audio)
                 print('> ' + said)
