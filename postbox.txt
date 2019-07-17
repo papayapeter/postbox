@@ -7,6 +7,7 @@ quit: goodbye
 quit: open
 quit: enough
 pre: hi hello
+pre: unlocked unlocking unlock
 pre: postbox mailbox
 pre: post mail
 pre: dont don't
@@ -52,7 +53,11 @@ key: hello
   decomp: *
     reasmb: How are you.  Tell me what's up.
     reasmb: Hi.  What what are you thinking about ?
-key: ok
+key: unlock
+    decomp: *
+      reasmb: I'm not that easy.
+      reasmb: Tell me about yourself first.
+key: okay
   decomp: *
     reasmb: Let's move on.
     reasmb: Is it really okay ?
