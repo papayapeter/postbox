@@ -86,12 +86,11 @@ class postbox(eliza.Eliza):
         # repeat until no error has occured and something has been recognized
         while repeat:
             with sr.Microphone() as source: # listen to microphone
-                audio = r.listen(source)
+                audio = sr.listen(source)
             try: # try to recognize
                 # tell about slow speed
                 if first:
                     inserts = ('I\'m a little slow, give me a second.',
-                               'Let me think.',
                                'I\'m not the youngest anymore, give me some time to think.')
                     insert = random.choice(inserts)
                     print(insert)

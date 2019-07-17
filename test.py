@@ -14,7 +14,7 @@ class postbox(eliza.Eliza):
         # repeat until no error has occured and something has been recognized
         while repeat:
             with sr.Microphone() as source: # listen to microphone
-                audio = r.listen(source)
+                audio = sr.listen(source)
             try: # try to recognize
                 said = r.recognize_sphinx(audio)
                 print('> ' + said)
