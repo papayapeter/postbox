@@ -150,5 +150,3 @@ while True:
     elif GPIO.event_detected(GPIO_UNLOCKED_IN):
         posty.goodbye()
         time.sleep(5)
-    elif GPIO.event_detected(GPIO_MAIL_IN):
-        print('mail!')
