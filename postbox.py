@@ -94,7 +94,7 @@ class postbox(eliza.Eliza):
         return True
 
 # variables --------------------------------------------------------------------
-mail_in  = False # was mail inside at the time of unlocking?
+mail_in = 0 # was mail inside at the time of unlocking?
 
 # main script ------------------------------------------------------------------
 # GPIO setup
@@ -141,16 +141,12 @@ while True:
         time.sleep(1)
         GPIO.output(GPIO_UNLOCK_OUT, GPIO.LOW)
     # mail was inside but has been taken out
-    elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0 and mail_in:
+elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0 and mail_in == 1:
         posty.post_out()
     # mail wasn't inside but has been put in
-    elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 1 and not mail_in:
+elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 1 and not mail_in == 0:
         posty.post_in()
     # was closed
     elif GPIO.event_detected(GPIO_UNLOCKED_IN):
         posty.goodbye()
-        time.sleep(10)
-    elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0:
-        print('post out')
-    elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 1:
-        print('post in')
+        time.sleep(5)
