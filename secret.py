@@ -36,44 +36,44 @@ class postbox(eliza.Eliza):
         calls = ('Hello', 'Heeeeello', 'Anyone there?', 'I\'m a little lonely')
         call =  random.choice(calls)
         print(call)
-        self.say(call, 95, 100)
+        self.say(call, 100, 100)
     # thanks for the post
     def post_in(self):
         calls = ('Yummy. Mail.', 'Thanks.', 'Somebody will be happy.')
         call =  random.choice(calls)
         print(call)
-        self.say(call, 95, 100)
+        self.say(call, 100, 100)
     # enjoy the post
     def post_out(self):
         calls = ('I feel a little empty now.', 'Oh.', 'I hope it\'s good news.')
         call =  random.choice(calls)
         print(call)
-        self.say(call, 95, 100)
+        self.say(call, 100, 100)
     # the goodbye
     def goodbye(self):
         calls = ('Have a wonderful day.', 'Goodbye then.', 'Please come visit me again.')
         call =  random.choice(calls)
         print(call)
-        self.say(call, 95, 100)
+        self.say(call, 100, 100)
     # the greeting
     def initial(self): # print and speak greeting
         intros = ('Before I open up to you, I want you to open up to me.',
                   'Do you expect me to show you my inner self, when you haven\'t revealed anything about yourself?')
         intro =  random.choice(intros)
         print(intro)
-        self.say(intro, 95, 100)
+        self.say(intro, 100, 100)
 
         time.sleep(0.75)
 
         intro =  random.choice(self.initials)
         print(intro)
-        self.say(intro, 95, 100)
+        self.say(intro, 100, 100)
 
         time.sleep(0.25)
 
         intro = 'But I am a little deaf. So please speak right into my ear.'
         print(intro)
-        self.say(intro, 95, 100)
+        self.say(intro, 100, 100)
     # the unlocking sentence
     def final(self): # print and speak goodbye
         outros = ('Thank you very much. I think you deserve to have a look.',
@@ -81,13 +81,13 @@ class postbox(eliza.Eliza):
                   'Alright thank you. Before you go, please reach inside of me.')
         outro = random.choice(outros)
         print(outro)
-        self.say(outro, 95, 100)
+        self.say(outro, 100, 100)
 
         time.sleep(0.75)
 
         outro = random.choice(self.finals)
         print(outro)
-        self.say(outro, 95, 100)
+        self.say(outro, 100, 100)
     # the run-loop (conversation)
     def run(self, respond = True, first = False):
         said = ''
@@ -104,7 +104,7 @@ class postbox(eliza.Eliza):
                                'I\'m not the youngest anymore, give me some time to think.')
                     insert = random.choice(inserts)
                     print(insert)
-                    self.say(insert, 95, 100)
+                    self.say(insert, 100, 100)
 
                     first_repeat = False
 
@@ -126,7 +126,7 @@ class postbox(eliza.Eliza):
         # print and speak answer
         if respond:
             print(output)
-            self.say(output, 95, 100)
+            self.say(output, 100, 100)
 
         return True
 
@@ -154,7 +154,7 @@ with sr.Microphone() as source:
 posty = postbox()
 posty.load('/home/pi/postbox/secret.txt')
 
-posty.say('I\'m online', 95, 100)
+posty.say('I\'m online', 100, 100)
 
 # main loop --------------------------------------------------------------------
 while True:
