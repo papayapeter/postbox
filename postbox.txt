@@ -1,6 +1,5 @@
-initial: Tell me a secret.
-initial: Tell me a secret of yours.
-initial: Tell me something secret.
+initial: So please tell me about yourself.
+initial: Please start talking.
 final: I'm unlocked.
 final: I'll unlock myself.
 quit: bye
@@ -47,14 +46,9 @@ synon: be am is are was
 key: xnone
   decomp: *
     reasmb: Please go on.
-    reasmb: What does that suggest to you ?
-    reasmb: I like you. Please tell me more
     reasmb: I'm not sure I understand you fully.
+    reasmb: What does that suggest to you ?
     reasmb: Do you feel strongly about discussing such things ?
-key: secret
-  decomp: *
-    reasmb: I like secrets. Tell me more.
-    reasmb: Is that all to it?
 key: hello
   decomp: *
     reasmb: How are you.  Tell me what's up.
@@ -88,7 +82,7 @@ key: mailbox 50
     reasmb: What do you think about mailboxes ?
 key: what
   decomp: what
-    reasmb: It's simple. Tell me a secret of yours
+    reasmb: what ?
     reasmb: what ?
     reasmb: You are being quite rude.
   decomp: *
