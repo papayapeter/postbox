@@ -3,6 +3,7 @@ import os
 import time
 import random
 import RPi.GPIO as GPIO
+import speech_recognition as sr
 import eliza
 
 # pins -------------------------------------------------------------------------
