@@ -134,6 +134,10 @@ GPIO.add_event_detect(GPIO_MAIL_IN, GPIO.BOTH)
 GPIO.add_event_detect(GPIO_UNLOCKED_IN, GPIO.FALLING)
 GPIO.add_event_detect(GPIO_TOUCHED_IN, GPIO.RISING)
 
+# calibrate
+with sr.Microphone() as source:
+    r.adjust_for_ambient_noise(source)
+
 # eliza setup
 posty = postbox()
 posty.load('postbox.txt')
