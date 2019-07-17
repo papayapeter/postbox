@@ -3,7 +3,6 @@ import os
 import time
 import random
 import RPi.GPIO as GPIO
-import speech_recognition as sr
 import eliza
 
 # pins -------------------------------------------------------------------------
@@ -86,7 +85,7 @@ class postbox(eliza.Eliza):
         # repeat until no error has occured and something has been recognized
         while repeat:
             with sr.Microphone() as source: # listen to microphone
-                audio = sr.listen(source)
+                audio = r.listen(source)
             try: # try to recognize
                 # tell about slow speed
                 if first:
