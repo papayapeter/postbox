@@ -13,7 +13,7 @@ GPIO_UNLOCKED_IN  = 13;
 GPIO_TOUCHED_IN   = 6;
 
 # settings ---------------------------------------------------------------------
-conversation_length = 2 # number of exchanges (+/- 20 % each time)
+conversation_length = 5 # number of exchanges (+/- 20 % each time)
 
 # objects ----------------------------------------------------------------------
 r = sr.Recognizer()
@@ -54,16 +54,33 @@ class postbox(eliza.Eliza):
         self.say(call, 110, 100)
     # the greeting
     def initial(self): # print and speak greeting
+        intros = ('Before I open up to you, I want you to open up to me.',
+                  'Do you expect me to show you my inner self, when you haven\'t revealed anything about yourself?')
+        intro =  random.choice(intros)
+        print(intro)
+        self.say(intro, 110, 100)
+
+        time.sleep(1)
+
         intro =  random.choice(self.initials)
         print(intro)
         self.say(intro, 110, 100)
     # the unlocking sentence
     def final(self): # print and speak goodbye
+        outros = ('Thank you very much. I think you deserve to have a look.',
+                  'That was an interesting conversation. Also quite weird.',
+                  'Alright thank you. Before you go, please reach inside of me.')
+        outro = random.choice(outros)
+        print(outro)
+        self.say(outro, 110, 100)
+
+        time.sleep(1)
+
         outro = random.choice(self.finals)
         print(outro)
         self.say(outro, 110, 100)
     # the run-loop (conversation)
-    def run(self, respond):
+    def run(self, respond = True, first = False):
         said = ''
         repeat = True
         # repeat until no error has occured and something has been recognized
@@ -80,6 +97,14 @@ class postbox(eliza.Eliza):
                 print('Could not request results from Speech Recognition program; {0}'.format(e))
             if said == '': # nothing detected. repeat
                 print('No speech detected')
+
+        if first:
+            inserts = ('I\'m a little slow, give me a second.',
+                       'Let me think.',
+                       'I\'m not the youngest anymore, give me some time to think.')
+            insert = random.choice(intros)
+            print(insert)
+            self.say(insert, 110, 100)
 
         # get response. exit if no response left
         output = self.respond(said)
@@ -123,12 +148,19 @@ while True:
         posty.initial()
 
         # talk for conversation_length +/- 20%
-        count = conversation_length #+ random.randint(-(conversation_length * 0.2), conversation_length *0.2)
-        while count > 1 and posty.run(True):
+        count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
+
+        # run once with extra
+        posty.run(True, True)
+        count -= 1
+
+        # run normal
+        while count > 1 and posty.run():
             count -= 1
             print(count)
 
-        posty.run(False)
+        # run without answer for the last time
+        posty.run(False, False)
 
         # goodbye
         posty.final()

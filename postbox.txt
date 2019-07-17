@@ -1,8 +1,7 @@
-initial: Before I open up to you, I want you to open up to me. So please tell me about yourself.
-initial: Do you expect me to show you my inner self, when you haven't revealed anything about yourself? Start talking.
-final: Thank you very much. I think you deserve to have a look. I'm unlocked.
-final: That was an interesting conversation. Also quite weird. Anyway, I'll unlock myself.
-final: Alright thank you. Before you go, please reach inside of me.
+initial: So please tell me about yourself.
+initial: Please start talking.
+final: I'm unlocked.
+final: I'll unlock myself.
 quit: bye
 quit: goodbye
 quit: open
