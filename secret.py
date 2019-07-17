@@ -169,7 +169,6 @@ while True:
 
         # run once with ext
         first = True
-        first_repeat = True
         # run normal
         while count > 1 and posty.run(True, first):
             count -= 1
