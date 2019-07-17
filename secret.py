@@ -98,12 +98,13 @@ class postbox(eliza.Eliza):
                 audio = r.listen(source)
             try: # try to recognize
                 # tell about slow speed
-                if first:
+                if first and first_repeat:
                     inserts = ('I\'m a little slow, give me a second.',
                                'I\'m not the youngest anymore, give me some time to think.')
                     insert = random.choice(inserts)
                     print(insert)
                     self.say(insert, 95, 100)
+                    first_repeat = False
 
                 said = r.recognize_sphinx(audio)
                 print('> ' + said)
@@ -129,6 +130,7 @@ class postbox(eliza.Eliza):
 
 # variables --------------------------------------------------------------------
 mail_in = 0 # was mail inside at the time of unlocking?
+first_repeat = True
 
 # main script ------------------------------------------------------------------
 # GPIO setup
@@ -165,6 +167,7 @@ while True:
 
         # run once with ext
         first = True
+        first_repeat = True
         # run normal
         while count > 1 and posty.run(True, first):
             count -= 1
