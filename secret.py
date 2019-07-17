@@ -140,6 +140,50 @@ with sr.Microphone() as source:
 
 # eliza setup
 posty = postbox()
-posty.load('postbox.txt')
+posty.load('secret.txt')
 
-posty.say('This is a complete test sentence.', 110, 100)
+posty.say('I\'m online', 110, 100)
+
+# main loop --------------------------------------------------------------------
+while True:
+    # if touched and locked
+    if GPIO.event_detected(GPIO_TOUCHED_IN) and GPIO.input(GPIO_UNLOCKED_IN) == 0:
+        # greeting
+        posty.initial()
+
+        # talk for conversation_length +/- 20%
+        count = conversation_length + random.randint(-(conversation_length * 0.2), conversation_length *0.2)
+
+        # run once with extra
+        posty.run(True, True)
+        count -= 1
+
+        # run normal
+        while count > 1 and posty.run():
+            count -= 1
+            print(count)
+
+        # run without answer for the last time
+        posty.run(False, False)
+
+        # goodbye
+        posty.final()
+
+        # save mail state (is mail in the box?)
+        mail_in = GPIO.input(GPIO_MAIL_IN)
+
+        # unlock
+        GPIO.output(GPIO_UNLOCK_OUT, GPIO.HIGH)
+        time.sleep(1)
+        GPIO.output(GPIO_UNLOCK_OUT, GPIO.LOW)
+    elif GPIO.event_detected(GPIO_MAIL_IN):
+        # mail was inside but has been taken out
+        if GPIO.input(GPIO_MAIL_IN) == 0 and mail_in == 1:
+            posty.post_out()
+        # mail wasn't inside but has been put in
+        elif GPIO.input(GPIO_MAIL_IN) == 1 and mail_in == 0:
+            posty.post_in()
+    # was closed
+    elif GPIO.event_detected(GPIO_UNLOCKED_IN):
+        posty.goodbye()
+        time.sleep(5)
