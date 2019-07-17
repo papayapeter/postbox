@@ -138,7 +138,7 @@ while True:
 
         # unlock
         GPIO.output(GPIO_UNLOCK_OUT, GPIO.HIGH)
-        time.sleep(10)
+        time.sleep(1)
         GPIO.output(GPIO_UNLOCK_OUT, GPIO.LOW)
     # mail was inside but has been taken out
     elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0 and mail_in:
@@ -149,7 +149,7 @@ while True:
     # was closed
     elif GPIO.event_detected(GPIO_UNLOCKED_IN):
         posty.goodbye()
-        time.sleep(5)
+        time.sleep(10)
     elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 0:
         print('post out')
     elif GPIO.event_detected(GPIO_MAIL_IN) and GPIO.input(GPIO_MAIL_IN) == 1:
