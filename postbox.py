@@ -203,5 +203,5 @@ while True:
         posty.goodbye()
         time.sleep(5)
     # shutdown button is pressed
-    elif GPIO.event_detected(GPIO_SHUTDOWN):
-        print(1)
+    if GPIO.event_detected(GPIO_SHUTDOWN):
+        print('shutdown')
