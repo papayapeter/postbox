@@ -206,11 +206,11 @@ while run_loop:
         posty.goodbye()
         time.sleep(5)
     # shutdown button is pressed
-    if GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 1:
+    if GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 0:
         print('shutdown started')
         shutdown_timer = time.time()
     # shutdown button is released
-    elif GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 0:
+    elif GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 1:
         if shutdown_timer + 10 < time.time():
             print('shutting down')
             run_loop = False
