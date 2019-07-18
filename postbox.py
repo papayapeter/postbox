@@ -133,6 +133,7 @@ class postbox(eliza.Eliza):
 
 # variables --------------------------------------------------------------------
 mail_in = 0 # was mail inside at the time of unlocking?
+shutdown_timer = 0
 
 # main script ------------------------------------------------------------------
 # GPIO setup
@@ -147,7 +148,7 @@ GPIO.setup(GPIO_SHUTDOWN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(GPIO_MAIL_IN, GPIO.BOTH)
 GPIO.add_event_detect(GPIO_UNLOCKED_IN, GPIO.FALLING)
 GPIO.add_event_detect(GPIO_TOUCHED_IN, GPIO.RISING)
-GPIO.add_event_detect(GPIO_SHUTDOWN, GPIO.FALLING)
+GPIO.add_event_detect(GPIO_SHUTDOWN, GPIO.BOTH)
 
 # calibrate
 with sr.Microphone() as source:
@@ -159,8 +160,10 @@ posty.load('/home/pi/postbox/postbox.txt')
 
 posty.say('I\'m online', 100, 100)
 
+run_loop = True
+
 # main loop --------------------------------------------------------------------
-while True:
+while run_loop:
     # if touched and locked
     if GPIO.event_detected(GPIO_TOUCHED_IN) and GPIO.input(GPIO_UNLOCKED_IN) == 0:
         # greeting
@@ -203,5 +206,14 @@ while True:
         posty.goodbye()
         time.sleep(5)
     # shutdown button is pressed
-    if GPIO.event_detected(GPIO_SHUTDOWN):
-        print('shutdown')
+    if GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 0:
+        print('shutdown started')
+        shutdown_timer = time.time()
+    # shutdown button is released
+    elif GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 1:
+        if shutdown_timer + 10 < time.time():
+            print('shutting down')
+            run_loop = False
+
+GPIO.cleanup()
+os.system('shutdown -h now')
