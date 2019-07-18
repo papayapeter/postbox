@@ -14,7 +14,7 @@ GPIO_UNLOCK_OUT   = 26
 GPIO_MAIL_IN      = 19
 GPIO_UNLOCKED_IN  = 13
 GPIO_TOUCHED_IN   = 6
-# GPIO_SHUTDOWN     = 4
+GPIO_SHUTDOWN     = 4
 
 # settings ---------------------------------------------------------------------
 conversation_length = 5 # number of exchanges (+/- 20 % each time)
@@ -143,12 +143,12 @@ GPIO.setup(GPIO_UNLOCK_OUT, GPIO.OUT)
 GPIO.setup(GPIO_MAIL_IN, GPIO.IN)
 GPIO.setup(GPIO_UNLOCKED_IN, GPIO.IN)
 GPIO.setup(GPIO_TOUCHED_IN, GPIO.IN)
-# GPIO.setup(GPIO_SHUTDOWN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(GPIO_SHUTDOWN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 GPIO.add_event_detect(GPIO_MAIL_IN, GPIO.BOTH)
 GPIO.add_event_detect(GPIO_UNLOCKED_IN, GPIO.FALLING)
 GPIO.add_event_detect(GPIO_TOUCHED_IN, GPIO.RISING)
-# GPIO.add_event_detect(GPIO_SHUTDOWN, GPIO.BOTH)
+GPIO.add_event_detect(GPIO_SHUTDOWN, GPIO.BOTH)
 
 # calibrate
 with sr.Microphone() as source:
@@ -205,15 +205,15 @@ while run_loop:
     elif GPIO.event_detected(GPIO_UNLOCKED_IN):
         posty.goodbye()
         time.sleep(5)
-    # shutdown button is pressed
-    # if GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 0:
-    #     print('shutdown started')
-    #     shutdown_timer = time.time()
-    # # shutdown button is released
-    # elif GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 1:
-    #     if shutdown_timer + 10 < time.time():
-    #         print('shutting down')
-    #         run_loop = False
+    shutdown button is pressed
+    if GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 0:
+        print('shutdown started')
+        shutdown_timer = time.time()
+    # shutdown button is released
+    elif GPIO.event_detected(GPIO_SHUTDOWN) and GPIO.input(GPIO_SHUTDOWN) == 1:
+        if shutdown_timer + 10 < time.time():
+            print('shutting down')
+            run_loop = False
 
 GPIO.cleanup()
 os.system('shutdown -h now')
