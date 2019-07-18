@@ -51,7 +51,7 @@ key: xnone
     reasmb: Do you feel strongly about discussing such things ?
 key: hello
   decomp: *
-    reasmb: How are you.  Tell me what's up.
+    reasmb: Hello. How are you ?
     reasmb: Hi.  What what are you thinking about ?
 key: unlock
     decomp: *

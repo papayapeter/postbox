@@ -10,10 +10,11 @@ import speech_recognition as sr
 import eliza
 
 # pins -------------------------------------------------------------------------
-GPIO_UNLOCK_OUT   = 26;
-GPIO_MAIL_IN      = 19;
-GPIO_UNLOCKED_IN  = 13;
-GPIO_TOUCHED_IN   = 6;
+GPIO_UNLOCK_OUT   = 26
+GPIO_MAIL_IN      = 19
+GPIO_UNLOCKED_IN  = 13
+GPIO_TOUCHED_IN   = 6
+GPIO_SHUTDOWN     = 4
 
 # settings ---------------------------------------------------------------------
 conversation_length = 5 # number of exchanges (+/- 20 % each time)
@@ -141,10 +142,12 @@ GPIO.setup(GPIO_UNLOCK_OUT, GPIO.OUT)
 GPIO.setup(GPIO_MAIL_IN, GPIO.IN)
 GPIO.setup(GPIO_UNLOCKED_IN, GPIO.IN)
 GPIO.setup(GPIO_TOUCHED_IN, GPIO.IN)
+GPIO.setup(GPIO_SHUTDOWN, GPIO.IN)
 
 GPIO.add_event_detect(GPIO_MAIL_IN, GPIO.BOTH)
 GPIO.add_event_detect(GPIO_UNLOCKED_IN, GPIO.FALLING)
 GPIO.add_event_detect(GPIO_TOUCHED_IN, GPIO.RISING)
+GPIO.add_event_detect(GPIO_SHUTDOWN, GPIO.FALLING)
 
 # calibrate
 with sr.Microphone() as source:
@@ -199,3 +202,6 @@ while True:
     elif GPIO.event_detected(GPIO_UNLOCKED_IN):
         posty.goodbye()
         time.sleep(5)
+    # shutdown button is pressed
+elif GPIO.event_detected(GPIO_SHUTDOWN):
+        print(1)
