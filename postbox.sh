@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python3 /home/pi/postbox/secret.py
+python3 /home/pi/postbox/postbox.py
