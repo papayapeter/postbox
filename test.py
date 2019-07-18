@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 
+GPIO_SHUTDOWN     = 4
+
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(GPIO_SHUTDOWN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
